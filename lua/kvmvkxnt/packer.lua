@@ -37,21 +37,21 @@ return require('packer').startup(function(use)
     branch = 'v2.x',
     requires = {
       -- LSP Support
-      { 'neovim/nvim-lspconfig' },                   -- Required
-      { 'williamboman/mason.nvim' },                 -- Optional
-      { 'williamboman/mason-lspconfig.nvim' },       -- Optional
+      { 'neovim/nvim-lspconfig' },             -- Required
+      { 'williamboman/mason.nvim' },           -- Optional
+      { 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
       -- Autocompletion
-      { 'hrsh7th/nvim-cmp' },           -- Required
-      { 'hrsh7th/cmp-nvim-lsp' },       -- Required
-      { 'L3MON4D3/LuaSnip' },           -- Required
+      { 'hrsh7th/nvim-cmp' },     -- Required
+      { 'hrsh7th/cmp-nvim-lsp' }, -- Required
+      { 'L3MON4D3/LuaSnip' },     -- Required
     }
   }
 
   use {
     'nvim-tree/nvim-tree.lua',
     requires = {
-      'nvim-tree/nvim-web-devicons',       -- optional
+      'nvim-tree/nvim-web-devicons', -- optional
     },
   }
 
@@ -71,4 +71,43 @@ return require('packer').startup(function(use)
     "windwp/nvim-autopairs",
     config = function() require("nvim-autopairs").setup {} end
   }
+
+  use({
+    "utilyre/barbecue.nvim",
+    tag = "*",
+    requires = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
+    after = "nvim-web-devicons",     -- keep this if you're using NvChad
+    config = function()
+      require("barbecue").setup()
+    end,
+  })
+
+  use 'lewis6991/gitsigns.nvim' -- OPTIONAL: for git status
+  use 'romgrk/barbar.nvim'
+
+  use {
+    'glepnir/dashboard-nvim',
+    event = 'VimEnter',
+    config = function()
+      require('dashboard').setup {
+        shortcut = {
+          -- action can be a function type
+          { desc = string, group = 'highlight group', key = 'shortcut key', action = 'action when you press key' },
+        },
+        packages = { enable = true }, -- show how many plugins neovim loaded
+        -- limit how many projects list, action when you press key or enter it will run this action.
+        -- action can be a functino type, e.g.
+        -- action = func(path) vim.cmd('Telescope find_files cwd=' .. path) end
+        project = { enable = true, limit = 8, icon = 'your icon', label = '', action = 'Telescope find_files cwd=' },
+        mru = { limit = 10, icon = 'your icon', label = '', },
+        footer = {}, -- footer
+      }
+    end,
+    requires = { 'nvim-tree/nvim-web-devicons' }
+  }
+
+  use 'karb94/neoscroll.nvim'
 end)
